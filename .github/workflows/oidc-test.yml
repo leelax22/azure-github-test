@@ -1,0 +1,29 @@
+name: Azure OIDC Login Test
+
+on:
+  push:
+    branches:
+      - main  # federated credential의 subject와 일치해야 함
+
+permissions:
+  id-token: write   # OIDC 토큰 발급 권한 필수
+  contents: read
+
+jobs:
+  test-oidc:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Login to Azure using OIDC
+      uses: azure/login@v1
+      with:
+        client-id: '9f7ec5ec-7be3-44c6-a2b0-9c7ad037d86f'
+        tenant-id: '351780c5-6d64-42cb-8f13-de4835fb6e9e'
+        subscription-id: '80570774-e7e3-4960-82f1-9d156f114ce4'
+
+    - name: Show logged-in user
+      run: az account show
+
